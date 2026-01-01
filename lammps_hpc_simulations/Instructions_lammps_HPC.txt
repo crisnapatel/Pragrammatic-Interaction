@@ -1,0 +1,33 @@
+# This file has instructions to install lammps in your HPC account at IIT Delhi.
+------------------------------------------------------------------------
+# Ensure that you've internet connection on your compute node.
+# You could read this guide on setting up internet connection on your compute node: https://github.com/crisnapatel/HPCIITD/tree/main/IITD%20HPC%20Internet
+
+# I downloaded the lammps-22Jul2025 source code.
+# Open a terminal in lammps-22Jul2025/ dir and follow following commands
+------------------------------------------------------------------------
+mkdir lmp_openmp_build 
+cd lmp_openmp_build
+module purge
+rm -rf *
+
+# Core compilers and tools
+module load apps/cmake/4.0.1/gnu
+module load compiler/gcc/9.1/openmpi/4.1.2
+module load compiler/cuda/12.3/compilervars
+
+# Math Libraries (MKL replaces BLAS/LAPACK, and FFTW is for Fourier transforms)
+module load mkl/intel/2020u4/mklvars
+module load lib/fftw/3.3.10/gcc9.1
+
+cmake -C ../cmake/presets/nolib.cmake -C ../cmake/presets/most.cmake \
+-DBUILD_MPI=ON \
+-D BUILD_OMP=ON \
+-D PKG_REAXFF=ON \
+-D PKG_GPU=ON \
+-D LAMMPS_MACHINE=omp \
+-D CMAKE_INSTALL_PREFIX=$HOME/opt/lammps-22Jul2025-omp ../cmake
+
+make -j$(nproc)
+make install
+------------------------------------------------------------------------

@@ -1,0 +1,472 @@
+
+# Ensure internet connection in the compute node.
+See this if not sure how to do it: 
+
+# Create a build directory and cd to it.
+
+mkdir lmp_openmp_build; cd lmp_openmp_build;
+
+
+# Purge all loaded modules to be safe.
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ module purge
+
+# Ensure your build dir is clean.
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ rm -rf *
+
+# Load necessary modules.
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ module load apps/cmake/4.0.1/gnu
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ module load compiler/gcc/9.1/openmpi/4.1.2
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ module load compiler/cuda/12.3/compilervars
+Warning: The module (compiler/cuda/12.3/compilervars) will only work on GPU nodes. To check GPU availability, please run this command: nvidia-smi
+If you get the output command not found, please request a GPU node and try again.
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ module load mkl/intel/2020u4/mklvars
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ module load lib/fftw/3.3.10/gcc9.1
+
+# Start the build.
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ cmake -C ../cmake/presets/nolib.cmake -C ../cmake/presets/most.cmake \
+> -DBUILD_MPI=ON \
+> -D BUILD_OMP=ON \
+> -D PKG_REAXFF=ON \
+> -D PKG_GPU=ON \
+> -D LAMMPS_MACHINE=omp \
+> -D CMAKE_INSTALL_PREFIX=$HOME/opt/lammps-22Jul2025-omp ../cmake
+loading initial cache file ../cmake/presets/nolib.cmake
+loading initial cache file ../cmake/presets/most.cmake
+CMake Deprecation Warning at CMakeLists.txt:22 (cmake_policy):
+  The OLD behavior for policy CMP0109 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+
+
+CMake Deprecation Warning at CMakeLists.txt:26 (cmake_policy):
+  The OLD behavior for policy CMP0135 will be removed from a future version
+  of CMake.
+
+  The cmake-policies(7) manual explains that the OLD behaviors of all
+  policies are deprecated and that a policy should be set to OLD only under
+  specific short-term circumstances.  Projects should be ported to the NEW
+  behavior and not rely on setting a policy to OLD.
+
+
+-- The CXX compiler identification is GNU 9.1.0
+-- The C compiler identification is GNU 9.1.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /home/soft/centOS/compilers/gcc/9.1.0_new/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /home/soft/centOS/compilers/gcc/9.1.0_new/bin/gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Could NOT find Git (missing: GIT_EXECUTABLE) 
+-- Appending /home/apps/centos7/fftw/3.3.10/lib:/home/soft/cuda-12.3.2/lib64:/home/soft/cuda-12.3.2/lib64/stubs:/home/soft/cuda-12.3.2/nvvm/lib64:/home/soft/cuda-12.3.2/extras/CUPTI/lib64:/home/soft/cuda-12.3.2/extras/Debugger/lib64:/home/soft/centOS/compilers/gcc/openmpi/4.1.2/lib:/home/apps/LIBISL/0.18/gnu/lib to CMAKE_LIBRARY_PATH: /home/apps/centos7/fftw/3.3.10/lib:/home/soft/cuda-12.3.2/lib64:/home/soft/cuda-12.3.2/lib64/stubs:/home/soft/cuda-12.3.2/nvvm/lib64:/home/soft/cuda-12.3.2/extras/CUPTI/lib64:/home/soft/cuda-12.3.2/extras/Debugger/lib64:/home/soft/centOS/compilers/gcc/openmpi/4.1.2/lib:/home/apps/LIBISL/0.18/gnu/lib
+-- Running check for auto-generated files from make-based build system
+-- Found MPI_CXX: /home/soft/centOS/compilers/gcc/openmpi/4.1.2/lib/libmpi_cxx.so (found version "3.1")
+-- Found MPI: TRUE (found version "3.1") found components: CXX
+-- Looking for C++ include omp.h
+-- Looking for C++ include omp.h - found
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Found OpenMP: TRUE (found version "4.5") found components: CXX
+-- Looking for sgemm_
+-- Looking for sgemm_ - not found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE
+-- Looking for sgemm_
+-- Looking for sgemm_ - found
+-- Found BLAS: /home/soft/intel2020u4/mkl/lib/intel64_lin/libmkl_intel_lp64.so;/home/soft/intel2020u4/mkl/lib/intel64_lin/libmkl_intel_thread.so;/home/soft/intel2020u4/mkl/lib/intel64_lin/libmkl_core.so;/home/soft/intel2020u4/lib/intel64_lin/libiomp5.so;-lpthread;-lm;-ldl
+-- Looking for cheev_
+-- Looking for cheev_ - found
+-- Found LAPACK: /home/soft/intel2020u4/mkl/lib/intel64_lin/libmkl_intel_lp64.so;/home/soft/intel2020u4/mkl/lib/intel64_lin/libmkl_intel_thread.so;/home/soft/intel2020u4/mkl/lib/intel64_lin/libmkl_core.so;/home/soft/intel2020u4/lib/intel64_lin/libiomp5.so;-lpthread;-lm;-ldl;-lpthread;-lm;-ldl
+-- Found GZIP: /usr/bin/gzip
+-- Could NOT find FFMPEG (missing: FFMPEG_EXECUTABLE) 
+-- Found PkgConfig: /usr/bin/pkg-config (found version "0.27.1")
+-- Checking for module 'fftw3'
+--   Found fftw3, version 3.3.10
+-- Found FFTW3: /home/apps/centos7/fftw/3.3.10/lib/libfftw3.so
+-- Could NOT find VORO (missing: VORO_LIBRARY VORO_INCLUDE_DIR) 
+-- Voro++ download requested - we will build our own
+-- Could NOT find Eigen3 (missing: Eigen3_DIR)
+-- Eigen3 download requested - we will build our own
+-- Found ZLIB: /usr/lib64/libz.so (found version "1.2.7")
+-- Checking for module 'libzstd>=1.4'
+--   No package 'libzstd' found
+-- Looking for C++ include cmath
+-- Looking for C++ include cmath - found
+-- Downloading and building OpenCL loader library
+-- Downloading https://download.lammps.org/thirdparty/opencl-loader-2024.05.09.tar.gz
+-- [download 11% complete]
+-- [download 23% complete]
+-- [download 46% complete]
+-- [download 57% complete]
+-- [download 69% complete]
+-- [download 80% complete]
+-- [download 100% complete]
+-- Unpacking and configuring opencl-loader-2024.05.09.tar.gz
+-- Looking for secure_getenv
+-- Looking for secure_getenv - found
+-- Looking for __secure_getenv
+-- Looking for __secure_getenv - not found
+-- Defining OpenCL::Headers through OPENCL_ICD_LOADER_HEADERS_DIR
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Generating style headers...
+-- Generating package headers...
+-- Generating lmpinstalledpkgs.h...
+-- Looking for a Fortran compiler
+-- Looking for a Fortran compiler - /usr/bin/f95
+-- The Fortran compiler identification is GNU 4.8.5
+-- Detecting Fortran compiler ABI info
+-- Detecting Fortran compiler ABI info - done
+-- Check for working Fortran compiler: /usr/bin/f95 - skipped
+-- Found Python3: /usr/bin/python3.6m (found version "3.6.8") found components: Interpreter
+-- The following tools and libraries have been found and configured:
+ * MPI
+ * LAPACK
+ * BLAS
+ * ZLIB
+ * Threads
+ * OpenMP
+ * PkgConfig
+ * FFTW3
+ * Python3
+
+-- <<< Build configuration >>>
+   LAMMPS Version:   2025.7.22.0 
+   Operating System: Linux CentOS 7
+   CMake Version:    4.0.1
+   Build type:       RelWithDebInfo
+   Install path:     /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp
+   Generator:        Unix Makefiles using /usr/bin/gmake
+-- Enabled packages: AMOEBA;ASPHERE;BOCS;BODY;BPM;BROWNIAN;CG-DNA;CG-SPICA;CLASS2;COLLOID;COLVARS;COMPRESS;CORESHELL;DIELECTRIC;DIFFRACTION;DIPOLE;DPD-BASIC;DPD-MESO;DPD-REACT;DPD-SMOOTH;DRUDE;EFF;ELECTRODE;EXTRA-COMMAND;EXTRA-COMPUTE;EXTRA-DUMP;EXTRA-FIX;EXTRA-MOLECULE;EXTRA-PAIR;FEP;GPU;GRANULAR;INTERLAYER;KSPACE;LEPTON;MACHDYN;MANYBODY;MC;MEAM;MESONT;MISC;ML-IAP;ML-POD;ML-SNAP;ML-UF3;MOFFF;MOLECULE;OPENMP;OPT;ORIENT;PERI;PHONON;PLUGIN;POEMS;QEQ;REACTION;REAXFF;REPLICA;RHEO;RIGID;SHOCK;SPH;SPIN;SRD;TALLY;UEF;VORONOI;YAFF
+-- <<< Compilers and Flags: >>>
+-- C++ Compiler:     /home/soft/centOS/compilers/gcc/9.1.0_new/bin/c++
+      Type:          GNU
+      Version:       9.1.0
+      C++ Standard:  17
+      C++ Flags:     -O2 -g -DNDEBUG
+      Defines:       LAMMPS_SMALLBIG;LAMMPS_MEMALIGN=64;LAMMPS_OMP_COMPAT=4;LAMMPS_GZIP;FFT_FFTW3;FFT_FFTW_THREADS;EIGEN_NO_CUDA;LMP_OPENMP;LMP_GPU;LMP_PLUGIN
+-- Fortran Compiler: /usr/bin/f95
+      Type:          GNU
+      Version:       4.8.5
+      Fortran Flags: -O2 -g
+-- C compiler:       /home/soft/centOS/compilers/gcc/9.1.0_new/bin/gcc
+      Type:          GNU
+      Version:       9.1.0
+      C Flags:       -O2 -g -DNDEBUG
+-- <<< Linker flags: >>>
+-- Executable name:  lmp_omp
+-- Static library flags:    
+-- <<< MPI flags >>>
+-- MPI_defines:      MPICH_SKIP_MPICXX;OMPI_SKIP_MPICXX;_MPICC_H
+-- MPI includes:     /home/soft/centOS/compilers/gcc/openmpi/4.1.2/include
+-- MPI libraries:    /home/soft/centOS/compilers/gcc/openmpi/4.1.2/lib/libmpi_cxx.so;/home/soft/centOS/compilers/gcc/openmpi/4.1.2/lib/libmpi.so;
+-- <<< GPU package settings >>>
+-- GPU API:                  OPENCL
+-- GPU precision:            MIXED
+-- <<< FFT settings >>>
+-- Primary FFT lib:  FFTW3
+-- Using double precision FFTs
+-- Using threaded FFTs
+-- Using builtin distributed FFT algorithms
+-- <<< Building Tools >>>
+-- Configuring done (18.5s)
+-- Generating done (1.3s)
+-- Build files have been written to: /home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lmp_omp_build
+
+# Start compilation.
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ make -j 16
+[  0%] Generating includes/lammps/angle.h
+[  0%] Generating includes/lammps/citeme.h
+[  0%] Generating includes/lammps/atom.h
+[  0%] Generating includes/lammps/bond.h
+[  0%] Creating directories for 'voro_build'
+[  0%] Creating directories for 'Eigen3_build'
+[  0%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/body.cpp.o
+[  0%] Generating includes/lammps/command.h
+[  0%] Generating includes/lammps/comm.h
+[  0%] Generating includes/lammps/compute.h
+[  0%] Building C object _deps/opencl_loader-build/CMakeFiles/OpenCL.dir/loader/icd.c.o
+[  0%] Generating includes/lammps/error.h
+[  0%] Generating includes/lammps/dihedral.h
+[  0%] Performing download step (download, verify and extract) for 'voro_build'
+[  0%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/src/CompiledExpression.cpp.o
+[  0%] Generating includes/lammps/domain.h
+[  0%] Built target atom.h
+[  0%] Built target angle.h
+-- Downloading...
+   dst='/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lmp_omp_build/voro_build-prefix/src/voro++-0.4.6.tar.gz'
+   timeout='none'
+   inactivity timeout='none'
+[  0%] Performing download step (download, verify and extract) for 'Eigen3_build'
+-- Using src='https://download.lammps.org/thirdparty/voro++-0.4.6.tar.gz'
+[  0%] Built target citeme.h
+[  0%] Built target command.h
+[  0%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/src/CompiledVectorExpression.cpp.o
+-- Downloading...
+   dst='/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lmp_omp_build/Eigen3_build-prefix/src/eigen-3.4.0.tar.gz'
+   timeout='none'
+   inactivity timeout='none'
+-- Using src='https://download.lammps.org/thirdparty/eigen-3.4.0.tar.gz'
+[  0%] Built target compute.h
+[  0%] Built target dihedral.h
+[  0%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/body23joint.cpp.o
+[  0%] Built target domain.h
+-- Git Directory: /home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/.git
+-- Generating lmpgitversion.h...
+[  0%] Building C object _deps/opencl_loader-build/CMakeFiles/OpenCL.dir/loader/icd_dispatch.c.o
+[  0%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/colmatmap.cpp.o
+[  0%] Built target bond.h
+[  0%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/colmatrix.cpp.o
+[  0%] Built target comm.h
+[  0%] Built target error.h
+[  0%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/eulerparameters.cpp.o
+[  1%] Generating includes/lammps/fix.h
+[  1%] Building C object _deps/opencl_loader-build/CMakeFiles/OpenCL.dir/loader/icd_dispatch_generated.c.o
+[  1%] Building C object _deps/opencl_loader-build/CMakeFiles/OpenCL.dir/loader/linux/icd_linux.c.o
+[  1%] Built target gitversion
+[  1%] Building C object _deps/opencl_loader-build/CMakeFiles/OpenCL.dir/loader/linux/icd_linux_envvars.c.o
+[  1%] Built target fix.h
+[  1%] Generating includes/lammps/exceptions.h
+[  1%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/fastmatrixops.cpp.o
+[  1%] Built target exceptions.h
+[  1%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/fixedpoint.cpp.o
+[  1%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/freebodyjoint.cpp.o
+
+# {CONTINUES}
+
+[  2%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/inertialframe.cpp.o
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/src/ExpressionProgram.cpp.o
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/src/ExpressionTreeNode.cpp.o
+[  2%] Linking C static library libOpenCL.a
+[  2%] Built target OpenCL
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/src/Operation.cpp.o
+-- [download 1% complete]
+-- [download 2% complete]
+-- [download 4% complete]
+-- [download 2% complete]
+-- [download 3% complete]
+-- [download 6% complete]
+-- [download 8% complete]
+-- [download 10% complete]
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/src/ParsedExpression.cpp.o
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/src/Parser.cpp.o
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/asmjit/arm/a64assembler.cpp.o
+[  2%] Generating includes/lammps/force.h
+[  2%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/joint.cpp.o
+[  2%] Built target force.h
+-- [download 4% complete]
+-- [download 5% complete]
+-- [download 6% complete]
+[  2%] Building CXX object CMakeFiles/poems.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/poems/mat3x3.cpp.o
+-- [download 12% complete]
+-- [download 14% complete]
+-- [download 16% complete]
+-- [download 18% complete]
+-- [download 20% complete]
+[  2%] Generating includes/lammps/group.h
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/asmjit/arm/a64builder.cpp.o
+[  2%] Built target group.h
+[  2%] Building CXX object CMakeFiles/lepton.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lib/lepton/asmjit/arm/a64compiler.cpp.o
+[  2%] Generating includes/lammps/improper.h
+-- [download 7% complete]
+-- [download 9% complete]
+-- [download 22% complete]
+-- [download 24% complete]
+-- [download 26% complete]
+-- [download 28% complete]
+-- [download 30% complete]
+-- [download 32% complete]
+[  2%] Generating includes/lammps/input.h
+[  2%] Built target improper.h
+[  2%] Built target input.h
+[  2%] Generating includes/lammps/info.h
+[  2%] Generating includes/lammps/kspace.h
+
+
+# {CONTINUES}
+
+
+
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/improper_hybrid.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/improper_zero.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/info.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/input.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/integrate.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/irregular.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/kspace.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/kspace_deprecated.cpp.o
+[ 35%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/kspace_zero.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/label_map.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/lammps.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/lattice.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/library.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/lmppython.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/math_eigen.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/math_extra.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/math_special.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/memory.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min_cg.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min_deprecated.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min_fire.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min_hftn.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min_linesearch.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min_quickmin.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/min_sd.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/minimize.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/modify.cpp.o
+[ 36%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/molecule.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/my_page.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/my_pool_chunk.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/nbin.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/nbin_multi.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/nbin_standard.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/neigh_list.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/neigh_request.cpp.o
+[ 37%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/neighbor.cpp.o
+
+# {CONTINUES}
+
+
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_atm.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_comb.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_comb3.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_eam.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_eam_alloy.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_eam_cd.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_eam_fs.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_eam_he.cpp.o
+[ 67%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/MANYBODY/pair_edip.cpp.o
+
+
+# {CONTINUES}
+
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_sw_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_tersoff_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_tersoff_mod_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_tersoff_zbl_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_vashishta_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_lj_charmm_coul_charmm_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_sph_heatconduction_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_sph_lj_gpu.cpp.o
+[ 99%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_sph_taitwater_gpu.cpp.o
+[100%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_born_coul_wolf_cs_gpu.cpp.o
+[100%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_born_coul_long_cs_gpu.cpp.o
+[100%] Building CXX object CMakeFiles/lammps.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/GPU/pair_coul_long_cs_gpu.cpp.o
+[100%] Linking CXX static library liblammps_omp.a
+[100%] Built target lammps
+[100%] Building CXX object CMakeFiles/lmp.dir/home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/src/main.cpp.o
+[100%] Linking CXX executable lmp_omp
+[100%] Built target lmp
+
+# Start installation.
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ make install
+[  0%] Built target OpenCL
+[  1%] Built target voro_build
+[  4%] Built target lepton
+[  6%] Built target colvars
+[  6%] Built target Eigen3_build
+[  8%] Built target poems
+[ 19%] Built target gpu
+-- Git Directory: /home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/.git
+-- Generating lmpgitversion.h...
+[ 19%] Built target gitversion
+[ 19%] Built target angle.h
+[ 19%] Built target atom.h
+[ 19%] Built target bond.h
+[ 19%] Built target citeme.h
+[ 19%] Built target comm.h
+[ 19%] Built target command.h
+[ 19%] Built target compute.h
+[ 19%] Built target dihedral.h
+[ 19%] Built target domain.h
+
+# {CONTINUES}
+
+[ 98%] Performing build step for 'spglib_build'
+[100%] Built target symspg
+[ 98%] Performing install step for 'spglib_build'
+-- Install configuration: "RelWithDebInfo"
+-- Up-to-date: /home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lmp_omp_build/phana_build/spglib_build_ext/lib/libsymspg.a
+-- Up-to-date: /home/chemical/phd/chz218339/lammps_stable/lammps-22Jul2025/lmp_omp_build/phana_build/spglib_build_ext/include/spglib.h
+[ 98%] Completed 'spglib_build'
+[ 99%] Built target spglib_build
+[100%] Built target phana
+Install the project...
+-- Install configuration: "RelWithDebInfo"
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/lmp_omp
+-- Set non-toolchain portion of runtime path of "/home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/lmp_omp" to ""
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/man/man1/lmp_omp.1
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/binary2txt
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/stl_bin2txt
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/reformat-json
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/chain.x
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/micelle2d.x
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/msi2lmp
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/man/man1/msi2lmp.1
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/phana
+-- Set non-toolchain portion of runtime path of "/home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/bin/phana" to ""
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/bench
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/bench/log.15Jul25.chain.fixed.g++.4
+
+# {CONTINUES}
+
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/pcff_templates.dat
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/cvff_aug.frc
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/clayff.frc
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/compass_published.frc
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/README
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/cff91.frc
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/cvff.frc
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/pcff.frc
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/oplsaa.frc
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/share/lammps/frc_files/pcff.rlb
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/etc/profile.d/lammps.sh
+-- Installing: /home/chemical/phd/chz218339/opt/lammps-22Jul2025-omp/etc/profile.d/lammps.csh
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+
+
+# Check for lmp_omp binary in the installation directory:
+
+[chz218339@aice011 ~/lammps_stable/lammps-22Jul2025/lmp_omp_build]
+$ ls $HOME/opt/lammps-22Jul2025-omp/bin 
+binary2txt  chain.x  lmp_omp  micelle2d.x  msi2lmp  phana  reformat-json  stl_bin2txt
+
+
+# export this path to .bashrc or .bash_profile so that you can run lmp_omp from any directory.
+# Open .bashrc file and write
+export PATH=$HOME/opt/lammps-22Jul2025-omp/bin:$PATH
+
+# Apart from exposing the lmp_omp binary directory we must load the OpenMPI library path as well.
+module purge # You may want to purge all previously loaded modules
+sh module load compiler/gcc/9.1/openmpi/4.1.2
+sh module load mkl/intel/2020u4/mklvars
+sh module load compiler/cuda/12.3/compilervars
+sh module load lib/fftw/3.3.10/gcc9.1
+
+# If you get : lmp_omp: error while loading shared libraries: libiomp5.so: cannot open shared object file: No such file or directory
+export LD_LIBRARY_PATH=/home/soft/intel2020u4/compilers_and_libraries_2020.4.304/linux/compiler/lib/intel64_lin:$LD_LIBRARY_PATH
+
+
+# Now you can run lmp_omp from any directory/shell

@@ -1,0 +1,24 @@
+# This file has instructions to install lammps in your HPC account at IIT Delhi.
+------------------------------------------------------------------------
+# Update & Download dependencies
+sudo apt update
+sudo apt install -y build-essential cmake git \
+  openmpi-bin libopenmpi-dev \
+  libfftw3-dev libjpeg-dev libpng-dev \
+  python3 python3-pip python3-dev
+
+
+# I downloaded lammps-22Jul2025 source code from: https://lammps.org/download.html
+# Placed downloaded tar file in my home dir ($HOME) in WSL
+
+tar -xvzf lammps-stable.tar.gz
+cd lammps-22Jul-2025
+mkdir lmp_omp_build
+cd lmp_omp_build
+export CC=mpicc
+export CXX=mpicxx
+cmake -C ../cmake/presets/nolib.cmake -C ../cmake/presets/most.cmake -DBUILD_MPI=ON -DBUILD_OMP=ON -DPKG_REAXFF=ON -DPKG_GPU=OFF -DCMAKE_C_COMPILER=mpicc -DCMAKE_CXX_COMPILER=mpicxx -DCMAKE_INSTALL_PREFIX=$HOME/opt/lammps-22Jul2025-omp ../cmake -D LAMMPS_MACHINE=omp
+make -j$(nproc)
+make install
+------------------------------------------------------------------------
+see the file lammps_WSL_windows11_console_out.txt to see my WSL terminal output.
