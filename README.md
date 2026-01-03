@@ -23,6 +23,19 @@ Scripts for converting Materials Studio trajectory files to LAMMPS-compatible fo
   - Exports only atoms from predefined `Sets` (see Materials Studio documentation)
   - Output compatible with OVITO for visualization
 
+### [`XSD_to_LAMMPS_Converter/`](XSD_to_LAMMPS_Converter/)
+Tools for converting Materials Studio XSD files to LAMMPS data file format.
+
+- **`xsd_to_lammps.py`** - Main converter class for parsing XSD files and generating LAMMPS data files
+  - Extracts atoms with coordinates, charges, and element types
+  - Extracts bonds with proper atom connectivity
+  - Differentiates bond types based on atom elements and bond order
+  - Handles non-sequential atom IDs
+  
+- **`convert_all_xsd.py`** - Batch conversion utility
+  - Converts all XSD files in a directory to LAMMPS format
+  - Automated processing for high-throughput workflows
+
 ## Requirements
 
 - Python 3.x with pandas
