@@ -1,6 +1,6 @@
 # Pragrammatic Interaction
 
-A collection of Python, Perl, and Bash scripts for processing molecular dynamics simulation data and trajectories. Each objective has its own directory with related scripts and utilities.
+A collection of Python, Perl, and Bash scripts for processing molecular dynamics simulation data and trajectories.
 
 ## Project Structure
 
@@ -35,6 +35,10 @@ Tools for converting Materials Studio XSD files to LAMMPS data file format.
 - **`convert_all_xsd.py`** - Batch conversion utility
   - Converts all XSD files in a directory to LAMMPS format
   - Automated processing for high-throughput workflows
+
+### ['lammps-log-Terminal-plots'](lammps-log-Terminal-plots/)
+  - Reads lammps log file and plots the columns in terminal itself.
+  - See docstring in both scripts for controls. You run `plot_lammps_log_tty`; it depends on `watch_lammps_log.py`.
 
 ## Requirements
 
